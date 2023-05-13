@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 // 引入三级联动组件
-import TypeNav from '@/views/Home/TypeNav/TypeNav.vue'
+import TypeNav from '@/components/TypeNav/TypeNav.vue'
 
 // 测试
 import { categoryListAPI } from '@/api/index'
