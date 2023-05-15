@@ -53,11 +53,16 @@ export default {
   name: 'Header',
   methods: {
     goSearch () {
-      console.log(this)
+    //   console.log(this)
       // 传递了两个参数，一个是路径参数，一个是？后面的查询参数
       //   this.$router.push('/search/' + this.keyword + '?k=' + this.keyword.toUpperCase())
       // 不能将name换为path的形式
-      this.$router.push({ name: 'search', params: { keyword: this.keyword }, query: { k: this.keyword.toUpperCase() } })
+      // 实现参数的合并
+      if (this.$route.query) {
+        const location = { name: 'search', params: { keyword: this.keyword } }
+        location.query = this.$route.query
+        this.$router.push(location)
+      }
     }
   }
 }
