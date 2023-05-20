@@ -21,6 +21,7 @@ export default {
     Footer
   },
   mounted () {
+    // 派发action，向vuex发起ajax请求，将数据存储在仓库中
     this.$store.dispatch('home/categoryList')
   }
 }

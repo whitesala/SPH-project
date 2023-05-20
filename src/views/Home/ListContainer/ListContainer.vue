@@ -3,19 +3,11 @@
     <div class="sortList clearfix">
           <div class="center">
               <!--banner轮播-->
-              <div class="swiper-container" id="mySwiper">
+              <div class="swiper" id="mySwiper">
                   <div class="swiper-wrapper">
-                      <div class="swiper-slide">
-                          <img src="./images/banner1.jpg" />
-                      </div>
-                      <div class="swiper-slide">
-                          <img src="./images/banner2.jpg" />
-                      </div>
-                      <div class="swiper-slide">
-                          <img src="./images/banner3.jpg" />
-                      </div>
-                      <div class="swiper-slide">
-                          <img src="./images/banner4.jpg" />
+                      <div class="swiper-slide" v-for="(carousel) in bannerList" :key="carousel.id" >
+                        <!-- carousel在这里是指轮播图的意思 -->
+                          <img :src="carousel.imgUrl" />
                       </div>
                   </div>
                   <!-- 如果需要分页器 -->
@@ -110,181 +102,228 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import Swiper from 'swiper'
 export default {
-  name: 'ListContainer'
+  name: 'ListContainer',
+  mounted () {
+    // 向vuex仓库派发action，将bannerList存入到仓库中
+    this.$store.dispatch('home/bannerList')
+  },
+  computed: {
+    // 使用命名空间的写法获取到vuex里面的bannerList数据
+    // 这样组件中就存有从仓库获取到的数据了
+    ...mapState('home', ['bannerList'])
+  },
+  watch: {
+    bannerList: {
+      handler (newVal, oldVal) {
+        // 在下次DOM更新循环结束之后执行延迟回调，在修改数据之后立即使用这个方法，获取更新后的DOM
+        this.$nextTick(() => {
+          const mySwiper = new Swiper('.swiper', {
+            // 水平移动
+            direction: 'horizontal',
+            // 开启循环播放
+            loop: true,
+            // 分页器
+            pagination: {
+              el: '.swiper-pagination',
+              type: 'bullets',
+              clickable: true
+            },
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev'
+            },
+            autoplay: true // 可选选项，自动滑动
+          })
+          console.log(mySwiper)
+        //   // 鼠标进入停止轮播
+        //   mySwiper.el.onmouseover = function () {
+        //     mySwiper.autoplay.stop()
+        //   }
+        //   // 鼠标离开开始轮播
+        //   mySwiper.el.onmouseout = function () {
+        //     mySwiper.autoplay.start()
+        //   }
+        })
+      }
+    }
+
+  }
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .list-container {
   width: 1200px;
   margin: 0 auto;
 
   .sortList {
-      height: 464px;
-      padding-left: 210px;
+    height: 464px;
+    padding-left: 210px;
 
-      .center {
-          box-sizing: border-box;
-          width: 740px;
-          height: 100%;
-          padding: 5px;
-          float: left;
+    .center {
+      box-sizing: border-box;
+      width: 740px;
+      height: 100%;
+      padding: 5px;
+      float: left;
+    }
+
+    .right {
+      float: left;
+      width: 250px;
+
+      .news {
+        border: 1px solid #e4e4e4;
+        margin-top: 5px;
+
+        h4 {
+          border-bottom: 1px solid #e4e4e4;
+          padding: 5px 10px;
+          margin: 5px 5px 0;
+          line-height: 22px;
+          overflow: hidden;
+          font-size: 14px;
+
+          .fl {
+            float: left;
+          }
+
+          .fr {
+            float: right;
+            font-size: 12px;
+            font-weight: 400;
+          }
+        }
+
+        .news-list {
+          padding: 5px 15px;
+          line-height: 26px;
+
+          .bold {
+            font-weight: 700;
+          }
+        }
       }
 
-      .right {
-          float: left;
-          width: 250px;
+      .lifeservices {
+        border-right: 1px solid #e4e4e4;
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
 
-          .news {
-              border: 1px solid #e4e4e4;
-              margin-top: 5px;
+        .life-item {
+          border-left: 1px solid #e4e4e4;
+          border-bottom: 1px solid #e4e4e4;
+          margin-right: -1px;
+          height: 64px;
+          text-align: center;
+          position: relative;
+          cursor: pointer;
+          width: 25%;
 
-              h4 {
-                  border-bottom: 1px solid #e4e4e4;
-                  padding: 5px 10px;
-                  margin: 5px 5px 0;
-                  line-height: 22px;
-                  overflow: hidden;
-                  font-size: 14px;
-
-                  .fl {
-                      float: left;
-                  }
-
-                  .fr {
-                      float: right;
-                      font-size: 12px;
-                      font-weight: 400;
-                  }
-              }
-
-              .news-list {
-                  padding: 5px 15px;
-                  line-height: 26px;
-
-                  .bold {
-                      font-weight: 700;
-                  }
-              }
+          .list-item {
+            background-image: url(./images/icons.png);
+            width: 61px;
+            height: 40px;
+            display: block;
           }
 
-          .lifeservices {
-              border-right: 1px solid #e4e4e4;
-              overflow: hidden;
-              display: flex;
-              flex-wrap: wrap;
-
-              .life-item {
-                  border-left: 1px solid #e4e4e4;
-                  border-bottom: 1px solid #e4e4e4;
-                  margin-right: -1px;
-                  height: 64px;
-                  text-align: center;
-                  position: relative;
-                  cursor: pointer;
-                  width: 25%;
-
-                  .list-item {
-                      background-image: url(./images/icons.png);
-                      width: 61px;
-                      height: 40px;
-                      display: block;
-                  }
-
-                  .service-intro {
-                      line-height: 22px;
-                      width: 60px;
-                      display: block;
-                  }
-
-                  &:nth-child(1) {
-                      .list-item {
-                          background-position: 0px -5px;
-                      }
-                  }
-
-                  &:nth-child(2) {
-                      .list-item {
-                          background-position: -62px -5px;
-                      }
-                  }
-
-                  &:nth-child(3) {
-                      .list-item {
-                          background-position: -126px -5px;
-                      }
-                  }
-
-                  &:nth-child(4) {
-                      .list-item {
-                          background-position: -190px -5px;
-                      }
-                  }
-
-                  &:nth-child(5) {
-                      .list-item {
-                          background-position: 0px -76px;
-                      }
-                  }
-
-                  &:nth-child(6) {
-                      .list-item {
-                          background-position: -62px -76px;
-                      }
-                  }
-
-                  &:nth-child(7) {
-                      .list-item {
-                          background-position: -126px -76px;
-                      }
-                  }
-
-                  &:nth-child(8) {
-                      .list-item {
-                          background-position: -190px -76px;
-                      }
-                  }
-
-                  &:nth-child(9) {
-                      .list-item {
-                          background-position: 0px -146px;
-                      }
-                  }
-
-                  &:nth-child(10) {
-                      .list-item {
-                          background-position: -62px -146px;
-                      }
-                  }
-
-                  &:nth-child(11) {
-                      .list-item {
-                          background-position: -126px -146px;
-                      }
-                  }
-
-                  &:nth-child(12) {
-                      .list-item {
-                          background-position: -190px -146px;
-                      }
-                  }
-              }
+          .service-intro {
+            line-height: 22px;
+            width: 60px;
+            display: block;
           }
 
-          .ads {
-              margin-top: 5px;
-
-              img {
-                  opacity: 0.8;
-                  transition: all 400ms;
-
-                  &:hover {
-                      opacity: 1;
-                  }
-              }
+          &:nth-child(1) {
+            .list-item {
+              background-position: 0px -5px;
+            }
           }
+
+          &:nth-child(2) {
+            .list-item {
+              background-position: -62px -5px;
+            }
+          }
+
+          &:nth-child(3) {
+            .list-item {
+              background-position: -126px -5px;
+            }
+          }
+
+          &:nth-child(4) {
+            .list-item {
+              background-position: -190px -5px;
+            }
+          }
+
+          &:nth-child(5) {
+            .list-item {
+              background-position: 0px -76px;
+            }
+          }
+
+          &:nth-child(6) {
+            .list-item {
+              background-position: -62px -76px;
+            }
+          }
+
+          &:nth-child(7) {
+            .list-item {
+              background-position: -126px -76px;
+            }
+          }
+
+          &:nth-child(8) {
+            .list-item {
+              background-position: -190px -76px;
+            }
+          }
+
+          &:nth-child(9) {
+            .list-item {
+              background-position: 0px -146px;
+            }
+          }
+
+          &:nth-child(10) {
+            .list-item {
+              background-position: -62px -146px;
+            }
+          }
+
+          &:nth-child(11) {
+            .list-item {
+              background-position: -126px -146px;
+            }
+          }
+
+          &:nth-child(12) {
+            .list-item {
+              background-position: -190px -146px;
+            }
+          }
+        }
       }
+
+      .ads {
+        margin-top: 5px;
+
+        img {
+          opacity: 0.8;
+          transition: all 400ms;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
   }
 }
 </style>

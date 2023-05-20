@@ -5,6 +5,13 @@ import store from './store'
 // 引入三级联动组件
 import TypeNav from '@/components/TypeNav/TypeNav.vue'
 
+// 引入mockjs文件
+import '@/mock/mockServer'
+
+// 引入swiper的样式组件
+import 'swiper/swiper-bundle.min.css'
+// import 'swiper/css'
+
 // 测试
 import { categoryListAPI } from '@/api/index'
 categoryListAPI()

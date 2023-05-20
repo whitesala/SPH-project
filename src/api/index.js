@@ -1,5 +1,11 @@
 // 导入request请求
-import request from './request.js'
+import apiRequests from './request.js'
+// 导入mock
+import mockRequests from './mockAjax.js'
 
 // 请求三级分类接口
-export const categoryListAPI = () => request.get('/product/getBaseCategoryList')
+export const categoryListAPI = () => apiRequests.get('/product/getBaseCategoryList')
+
+// 获取banner首页轮播图接口
+// 这里的banners是指向mock文件下、夹下的banners的json文件
+export const bannerListAPI = () => mockRequests.get('/banners')
