@@ -9,3 +9,6 @@ export const categoryListAPI = () => apiRequests.get('/product/getBaseCategoryLi
 // 获取banner首页轮播图接口
 // 这里的banners是指向mock文件下、夹下的banners的json文件
 export const bannerListAPI = () => mockRequests.get('/banners')
+
+// 获取Search搜索页信息的api接口
+export const searchListAPI = (params) => apiRequests.post('/list', params)

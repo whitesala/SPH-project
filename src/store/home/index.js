@@ -23,17 +23,16 @@ const actions = {
   // 通过API里面的接口调用向服务器发请求获取导航类别的服务器数据
   async categoryList ({ commit }) {
     const result = await categoryListAPI()
-    console.log(result)
     if (result.code === 200) {
       // 选取0-16条数据提交到mutations里面
       commit('CATEGORYLIST', result.data.slice(0, 16))
     }
   },
 
-  // 使用的是mock里面的数据
+  // 使用的是mock里面的数据模拟获取后台数据
   async bannerList ({ commit }) {
     const result = await bannerListAPI()
-    console.log(result)
+    // console.log(result)
     if (result.code === 200) {
       // 提交给mutations
       commit('BANNERLIST', result.data)

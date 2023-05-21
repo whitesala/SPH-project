@@ -49,8 +49,8 @@ const router = new VueRouter({
   routes
 })
 
-console.log(router)
-console.log(this)
+// console.log(router)
+// console.log(this)
 
 const originPush = VueRouter.prototype.push
 const originReplace = VueRouter.prototype.replace

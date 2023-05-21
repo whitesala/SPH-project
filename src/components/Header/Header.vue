@@ -28,7 +28,7 @@
             <!--头部第二行 搜索区域-->
             <div class="bottom">
                 <h1 class="logoArea">
-                    <a class="logo" title="尚品汇" href="###" target="_blank">
+                    <a class="logo" title="尚品汇" href="" target="_self">
                         <img src="./images/logo.png" alt="">
                     </a>
                 </h1>
@@ -64,6 +64,12 @@ export default {
         this.$router.push(location)
       }
     }
+  },
+  mounted () {
+    // 通过全局事件总线清楚关键字
+    this.$bus.$on('clearKeyword', () => {
+      this.keyword = ''
+    })
   }
 }
 </script>

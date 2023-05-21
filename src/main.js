@@ -14,6 +14,7 @@ import 'swiper/swiper-bundle.min.css'
 
 // 测试
 import { categoryListAPI } from '@/api/index'
+// import { prototype } from 'core-js/core/dict'
 categoryListAPI()
 
 // 全局注册三级联动组件
@@ -25,5 +26,9 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  // 配置全局事件总线
+  beforeCreate () {
+    Vue.prototype.$bus = this
+  }
 }).$mount('#app')

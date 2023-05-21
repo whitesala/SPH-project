@@ -66,7 +66,7 @@ export default {
   name: 'TypeNav',
   // 组件挂载完毕后向服务器发送请求
   mounted () {
-    console.log('执行了typenav组件')
+    // console.log('执行了typenav组件')
     // console.log(this)
     // 通知vuex发送请求，获取数据存储于仓库当中
     // dispatch派发
@@ -109,24 +109,30 @@ export default {
       // 确定点击的是a标签后如何区分是一二三级分类的标签
       // 利用自定义属性解决
       const element = event.target
-      console.log(element)
-      //  element.dataset返回的是当前点击标签的一个对象，如果点击的对象是a标签，那么里面就会包含事先设定的自定义标签data-categoryname(注意这里在浏览器中经过处理将后面的Name变为小写)，使用对象解构的形式将categoryname解构出来
-      const { categoryname, category1Id, category2Id, category3Id } = element.dataset
-      console.log(element.dataset)
+      // console.log(element)
+      //  element.dataset返回的是当前点击标签的一个对象，如果点击的对象是a标签，那么里面就会包含事先设定的自定义标签data-categoryname(注意这里在浏览器中经过处理将后面的Name变为小写,同时后面的Id再这里也需要小写id)，使用对象解构的形式将categoryname解构出来
+      const { categoryname, category1id, category2id, category3id } = element.dataset
+      // console.log(element.dataset)
       if (categoryname) {
-        const location = { name: 'search' }
-        const query = { categoryName: categoryname }
-        if (category1Id) {
-          query.category1Id = category1Id
-        } else if (category2Id) {
-          query.category2Id = category2Id
-        } else {
-          query.category3Id = category3Id
+        const location = {
+          name: 'search',
+          query: { categoryName: categoryname }
         }
-        // 整理完参数，为location添加query属性
-        location.query = query
+
+        if (category1id) {
+          location.query.category1Id = category1id
+        } else if (category2id) {
+          location.query.category2Id = category2id
+        } else {
+          location.query.category3Id = category3id
+        }
+        // 点击商品分类按钮的时候,如果路径当中携带params参数,需要合并携带给search模块
+        if (this.$route.params.keyword) {
+          location.params = this.$route.params
+        }
         // 路由跳转
         this.$router.push(location)
+        // console.log(location)
       }
     },
     enterShow () {
