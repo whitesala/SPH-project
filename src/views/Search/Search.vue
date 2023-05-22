@@ -80,35 +80,9 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+
+          <!-- 分页器组件-->
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -117,7 +91,7 @@
 
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Search',
@@ -241,10 +215,19 @@ export default {
       this.searchParams.order = newOrder
       // 发请求
       this.getSearchData()
+    },
+
+    // 从pagination接收页数
+    getPageNo (pageNo) {
+      this.searchParams.pageNo = pageNo
+      this.getSearchData()
     }
   },
   computed: {
     ...mapGetters(['goodsList']),
+    ...mapState({
+      total: state => state.search.searchList.total
+    }),
     // isActive () {
     //   return this.searchParams.order.indexOf('1') !== -1
     // }

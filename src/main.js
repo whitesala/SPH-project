@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 // 引入三级联动组件
 import TypeNav from '@/components/TypeNav/TypeNav.vue'
+// 引入分页器组件
+import Pagination from '@/components/Pagination/pagination'
 
 // 引入mockjs文件
 import '@/mock/mockServer'
@@ -20,6 +22,8 @@ categoryListAPI()
 // 全局注册三级联动组件
 // 使用TypeNav.name获取到组件的名字
 Vue.component(TypeNav.name, TypeNav)
+// 全局注册分页器组件
+Vue.component(Pagination.name, Pagination)
 
 Vue.config.productionTip = false
 
