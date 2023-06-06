@@ -12,3 +12,7 @@ export const bannerListAPI = () => mockRequests.get('/banners')
 
 // 获取Search搜索页信息的api接口
 export const searchListAPI = (params) => apiRequests.post('/list', params)
+
+// 获取商品详情页的api接口
+// 注意这里使用模板字符串的形式
+export const goodsInfoAPI = (skuId) => apiRequests.get(`/item/${skuId}`)
